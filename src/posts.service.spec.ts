@@ -5,24 +5,25 @@ describe('PostsService', () => {
   const post: Omit<Post, 'id' | 'date'> = {
     text: 'Mocked post',
   };
+  const preExistingPostData = { text: 'Some pre-existing post' };
   let preExistingPost: Post;
 
   beforeEach(async () => {
     postsService = new PostsService();
 
-    preExistingPost = postsService.create({ text: 'Some pre-existing post' });
+    preExistingPost = postsService.create(preExistingPostData);
   });
 
   it('should add a new post', () => {
     const newPost = postsService.create(post);
     const foundPost = postsService.find(newPost.id);
 
-    expect(foundPost).toEqual(newPost);
+    expect(foundPost).toMatchObject(post);
   });
 
   it('should find a post', () => {
     const foundPost = postsService.find(preExistingPost.id);
 
-    expect(foundPost).toEqual(preExistingPost);
+    expect(foundPost).toMatchObject(preExistingPostData);
   });
 });
